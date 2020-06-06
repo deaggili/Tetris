@@ -1,10 +1,17 @@
 package org.psnbtech;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Random;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 
 /**
@@ -40,6 +47,7 @@ public class Tetris extends JFrame {
 	 */
 	private SidePanel side;
 	
+	private ControlPanel control;
 	/**
 	 * Whether or not the game is paused.
 	 */
@@ -131,12 +139,15 @@ public class Tetris extends JFrame {
 		 */
 		this.board = new BoardPanel(this);
 		this.side = new SidePanel(this);
+		this.control = new ControlPanel(this);
 		
 		/*
 		 * Add the BoardPanel and SidePanel instances to the window.
 		 */
 		add(board, BorderLayout.CENTER);
 		add(side, BorderLayout.EAST);
+		add(control, BorderLayout.WEST);
+		
 		
 		/*
 		 * Adds a custom anonymous KeyListener to the frame.
@@ -145,7 +156,7 @@ public class Tetris extends JFrame {
 			
 			@Override
 			public void keyPressed(KeyEvent e) {
-								
+		
 				switch(e.getKeyCode()) {
 				
 				/*
@@ -247,7 +258,6 @@ public class Tetris extends JFrame {
 					logicTimer.reset();
 					break;
 				}
-				
 			}
 			
 		});
@@ -259,6 +269,8 @@ public class Tetris extends JFrame {
 		pack();
 		setLocationRelativeTo(null);
 		setVisible(true);
+		
+		requestFocus();
 	}
 	
 	/**
@@ -562,6 +574,7 @@ public class Tetris extends JFrame {
 	public static void main(String[] args) {
 		Tetris tetris = new Tetris();
 		tetris.startGame();
+		tetris.requestFocus();
 	}
 
 }
