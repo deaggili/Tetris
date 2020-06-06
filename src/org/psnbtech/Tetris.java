@@ -9,10 +9,13 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+
+
 
 /**
  * The {@code Tetris} class is responsible for handling much of the game logic and
@@ -22,6 +25,7 @@ import javax.swing.JFrame;
  */
 public class Tetris extends JFrame {
 	
+	//private static Store store = new Store(new FileStore());
 	/**
 	 * The Serial Version UID.
 	 */
@@ -233,13 +237,13 @@ public class Tetris extends JFrame {
 				/*
 				 * Start Game - When pressed, check to see that we're in either a game over or new
 				 * game state. If so, reset the game.
-				 */
+				 
 				case KeyEvent.VK_ENTER:
 					if(isGameOver || isNewGame) {
 						resetGame();
 					}
 					break;
-				
+				*/
 				}
 			}
 			
@@ -430,6 +434,9 @@ public class Tetris extends JFrame {
 		if(!board.isValidAndEmpty(currentType, currentCol, currentRow, currentRotation)) {
 			this.isGameOver = true;
 			logicTimer.setPaused(true);
+			
+			//ArrayList<String> list = store.readGameStore();
+			//store.writeGameStore(list);
 		}		
 	}
 
@@ -566,6 +573,11 @@ public class Tetris extends JFrame {
 		return currentRotation;
 	}
 
+	
+	public void allGameReset() {
+		resetGame();
+	}
+	
 	/**
 	 * Entry-point of the game. Responsible for creating and starting a new
 	 * game instance.

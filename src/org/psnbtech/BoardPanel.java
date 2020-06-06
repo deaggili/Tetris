@@ -303,7 +303,7 @@ public class BoardPanel extends JPanel {
 			String msg = tetris.isNewGame() ? "TETRIS" : "GAME OVER";
 			g.drawString(msg, CENTER_X - g.getFontMetrics().stringWidth(msg) / 2, 150);
 			g.setFont(SMALL_FONT);
-			msg = "Press Enter to Play" + (tetris.isNewGame() ? "" : " Again");
+			msg = "Press Start Button";
 			g.drawString(msg, CENTER_X - g.getFontMetrics().stringWidth(msg) / 2, 300);
 		} else {
 			

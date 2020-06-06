@@ -22,7 +22,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-
+import javax.swing.JTextField;
 
 public class ControlPanel extends JPanel {
 
@@ -109,90 +109,141 @@ public class ControlPanel extends JPanel {
 
 	private static Clip clip;
 
-	
 	public ControlPanel(Tetris tetris) {
 		this.tetris = tetris;
 
 		setPreferredSize(new Dimension(200, BoardPanel.PANEL_HEIGHT));
 		setBackground(Color.BLACK);
 		setLayout(null);
-		
+
 		JButton bgmON = new JButton("BGM ON");
 		JButton bgmOFF = new JButton("BGM OFF");
-        
+
+		JButton gameStart = new JButton("START");
+		JButton gameReset = new JButton("RESET");
+		
+		JTextField userName = new JTextField("USER_NAME", 13);
+		
 		bgmON.setForeground(new Color(128, 192, 128));
 		bgmON.setBackground(Color.DARK_GRAY);
 		bgmON.setFocusPainted(false);
 		Dimension size = bgmON.getPreferredSize();
-		bgmON.setBounds(10, 80,size.width , size.height);//bgmON.setLocation(500,100);
-		
-		
+		bgmON.setBounds(10, 80, size.width, size.height);// bgmON.setLocation(500,100);
+
 		bgmON.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
-				if(e.getSource().equals(bgmON)) {
+
+				if (e.getSource().equals(bgmON)) {
 					clip.start();
 					clip.loop(Clip.LOOP_CONTINUOUSLY);
-					
+
 					tetris.requestFocus();
 				}
 			}
 		});
 		add(bgmON);
 
-        bgmOFF.setForeground(new Color(128, 192, 128));
-        bgmOFF.setBackground(Color.DARK_GRAY);
-        bgmOFF.setFocusPainted(false);
+		bgmOFF.setForeground(new Color(128, 192, 128));
+		bgmOFF.setBackground(Color.DARK_GRAY);
+		bgmOFF.setFocusPainted(false);
 
-        Dimension sizeOFF = bgmOFF.getPreferredSize();
-        bgmOFF.setBounds(100, 80,sizeOFF.width , sizeOFF.height);//bgmON.setLocation(500,100);
-		
-		//myButton1.setPreferredSize(new Dimension(100, 100));
-		
-        bgmOFF.addActionListener(new ActionListener() {
-			
+		Dimension sizeOFF = bgmOFF.getPreferredSize();
+		bgmOFF.setBounds(100, 80, sizeOFF.width, sizeOFF.height);// bgmON.setLocation(500,100);
+
+		// myButton1.setPreferredSize(new Dimension(100, 100));
+
+		bgmOFF.addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				System.out.println("a");
-				if(e.getSource().equals(bgmOFF)) {
+				if (e.getSource().equals(bgmOFF)) {
 					clip.stop();
+
+					tetris.requestFocus();
+				}
+			}
+		});
+		add(bgmOFF);
+
+		gameStart.setForeground(new Color(128, 192, 128));
+		gameStart.setBackground(Color.DARK_GRAY);
+		gameStart.setFocusPainted(false);
+		Dimension sizegameStart = gameStart.getPreferredSize();
+		gameStart.setBounds(10, 180, sizegameStart.width, sizegameStart.height);// bgmON.setLocation(500,100);
+
+		gameStart.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+
+				if (e.getSource().equals(gameStart)) {
+
+					if(tetris.isGameOver() || tetris.isNewGame()) {
+						tetris.allGameReset();
+					}
 					
 					tetris.requestFocus();
 				}
 			}
 		});
-        add(bgmOFF);
-        
+		add(gameStart);
+
+		gameReset.setForeground(new Color(128, 192, 128));
+		gameReset.setBackground(Color.DARK_GRAY);
+		gameReset.setFocusPainted(false);
+		Dimension sizegameReset = gameStart.getPreferredSize();
+		gameReset.setBounds(84, 180, sizegameReset.width, sizegameReset.height);// bgmON.setLocation(500,100);
+
+		gameReset.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+
+				if (e.getSource().equals(gameReset)) {
+
+					if (tetris.isGameOver() || tetris.isNewGame() == false) {
+						tetris.allGameReset();
+
+					}
+					tetris.requestFocus();
+				}
+			}
+		});
+		add(gameReset);
+
+		userName.setCaretColor(new Color(128, 192, 128));
+		userName.setForeground(new Color(128, 192, 128));
+		userName.setBackground(Color.DARK_GRAY);
+		Dimension sizegameuserName = userName.getPreferredSize();
+		userName.setBounds(10, 220, sizegameuserName.width, sizegameuserName.height + 2);// bgmON.setLocation(500,100);
+		userName.setHorizontalAlignment(JTextField.CENTER);
+		add(userName);
+		
 		try {
 			String path = System.getProperty("user.dir");
 			System.out.println(path);
-			AudioInputStream audio = AudioSystem.getAudioInputStream(
-					new File(path + "\\bgm\\1bgm.wav"));
-			
-			
-			//C:\\Users\\kim\\Desktop\\otwojob\\kimasdjoooo\\Tetris\\src\\org\\psnbtech\\1bgm.wav
-			
-			
+			AudioInputStream audio = AudioSystem.getAudioInputStream(new File(path + "\\bgm\\1bgm.wav"));
+
 			clip = AudioSystem.getClip();
 			clip.open(audio);
-			//clip.start();
-			//clip.loop(Clip.LOOP_CONTINUOUSLY);
+			// clip.start();
+			// clip.loop(Clip.LOOP_CONTINUOUSLY);
 		}
 
 		catch (UnsupportedAudioFileException uae) {
 			System.out.println(uae);
-		}
-		catch (IOException ioe) {
+		} catch (IOException ioe) {
 			System.out.println(ioe);
-		}
-		catch (LineUnavailableException lua) {
+		} catch (LineUnavailableException lua) {
 			System.out.println(lua);
 		}
-		
+
 		tetris.requestFocus();
 	}
 
@@ -211,28 +262,28 @@ public class ControlPanel extends JPanel {
 		int offset;
 
 		/*
-		g.setFont(LARGE_FONT);
-		g.drawString("Stats", SMALL_INSET, offset = STATS_INSET);
-		g.setFont(SMALL_FONT);
-		g.drawString("Level: " + tetris.getLevel(), LARGE_INSET, offset += TEXT_STRIDE);
-		g.drawString("Score: " + tetris.getScore(), LARGE_INSET, offset += TEXT_STRIDE);
-
-		
-		g.setFont(LARGE_FONT);
-		g.drawString("Controls", SMALL_INSET, offset = CONTROLS_INSET);
-		g.setFont(SMALL_FONT);
-		g.drawString("A - Move Left", LARGE_INSET, offset += TEXT_STRIDE);
-		g.drawString("D - Move Right", LARGE_INSET, offset += TEXT_STRIDE);
-		g.drawString("Q - Rotate Anticlockwise", LARGE_INSET, offset += TEXT_STRIDE);
-		g.drawString("E - Rotate Clockwise", LARGE_INSET, offset += TEXT_STRIDE);
-		g.drawString("S - Drop", LARGE_INSET, offset += TEXT_STRIDE);
-		g.drawString("P - Pause Game", LARGE_INSET, offset += TEXT_STRIDE);
-		 	*/
+		 * g.setFont(LARGE_FONT); g.drawString("Stats", SMALL_INSET, offset =
+		 * STATS_INSET); g.setFont(SMALL_FONT); g.drawString("Level: " +
+		 * tetris.getLevel(), LARGE_INSET, offset += TEXT_STRIDE);
+		 * g.drawString("Score: " + tetris.getScore(), LARGE_INSET, offset +=
+		 * TEXT_STRIDE);
+		 * 
+		 * 
+		 * g.setFont(LARGE_FONT); g.drawString("Controls", SMALL_INSET, offset =
+		 * CONTROLS_INSET); g.setFont(SMALL_FONT); g.drawString("A - Move Left",
+		 * LARGE_INSET, offset += TEXT_STRIDE); g.drawString("D - Move Right",
+		 * LARGE_INSET, offset += TEXT_STRIDE); g.drawString("Q - Rotate Anticlockwise",
+		 * LARGE_INSET, offset += TEXT_STRIDE); g.drawString("E - Rotate Clockwise",
+		 * LARGE_INSET, offset += TEXT_STRIDE); g.drawString("S - Drop", LARGE_INSET,
+		 * offset += TEXT_STRIDE); g.drawString("P - Pause Game", LARGE_INSET, offset +=
+		 * TEXT_STRIDE);
+		 */
 		g.setFont(LARGE_FONT);
 		g.drawString("[BackGround Music]", SMALL_INSET, 70);
-		
 
-		
+		g.setFont(LARGE_FONT);
+		g.drawString("[Game Setting]", SMALL_INSET, 170);
+
 	}
 
 	/**
