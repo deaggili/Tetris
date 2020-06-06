@@ -12,6 +12,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -21,6 +22,7 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -105,6 +107,80 @@ public class ControlPanel extends JPanel {
 	/**
 	 * The Tetris instance.
 	 */
+	
+	private JTextField userName;
+	
+	public String getUserName() {
+		return userName.getText();
+	}
+	
+	public void setUpdateRankUser(ArrayList<String> users) {
+		
+		remove(rankUser1);
+		remove(rankUser2);
+		remove(rankUser3);
+		remove(rankUser4);
+		remove(rankUser5);
+		
+		rankUser1 = null;
+		rankUser2 = null;
+		rankUser3 = null;
+		rankUser4 = null;
+		rankUser5 = null;
+		
+		System.out.println(users.get(0));
+		System.out.println(users.get(1));
+		System.out.println(users.get(2));
+		System.out.println(users.get(3));
+		System.out.println(users.get(4));
+		
+		//rankUser1.setText(users.get(0));
+		//rankUser2.setText(users.get(1));
+		//rankUser3.setText(users.get(2));
+		//rankUser4.setText(users.get(3));
+		//rankUser5.setText(users.get(4));
+		
+		rankUser1 = new JLabel(users.get(0));
+		rankUser2 = new JLabel(users.get(1));
+		rankUser3 = new JLabel(users.get(2));
+		rankUser4 = new JLabel(users.get(3));
+		rankUser5 = new JLabel(users.get(4));
+		
+		rankUser1.setForeground(new Color(128, 192, 128));
+		Dimension sizerankUser1 = rankUser1.getPreferredSize();
+		rankUser1.setBounds(20, 310, sizerankUser1.width, sizerankUser1.height);// bgmON.setLocation(500,100);
+		add(rankUser1);
+		
+		rankUser2.setForeground(new Color(128, 192, 128));
+		Dimension sizerankUser2 = rankUser2.getPreferredSize();
+		rankUser2.setBounds(20, 330, sizerankUser2.width, sizerankUser2.height);// bgmON.setLocation(500,100);
+		add(rankUser2);
+		
+		rankUser3.setForeground(new Color(128, 192, 128));
+		Dimension sizerankUser3 = rankUser3.getPreferredSize();
+		rankUser3.setBounds(20, 350, sizerankUser3.width, sizerankUser3.height);// bgmON.setLocation(500,100);
+		add(rankUser3);
+		
+		rankUser4.setForeground(new Color(128, 192, 128));
+		Dimension sizerankUser4 = rankUser4.getPreferredSize();
+		rankUser4.setBounds(20, 370, sizerankUser4.width, sizerankUser4.height);// bgmON.setLocation(500,100);
+		add(rankUser4);
+		
+		rankUser5.setForeground(new Color(128, 192, 128));
+		Dimension sizerankUser5 = rankUser5.getPreferredSize();
+		rankUser5.setBounds(20, 390, sizerankUser5.width, sizerankUser5.height);// bgmON.setLocation(500,100);
+		add(rankUser5);
+		
+		revalidate();
+		repaint();
+	}
+
+	private JLabel rankUser1;
+	private JLabel rankUser2;
+	private JLabel rankUser3;
+	private JLabel rankUser4;
+	private JLabel rankUser5;
+	
 	private Tetris tetris;
 
 	private static Clip clip;
@@ -122,7 +198,13 @@ public class ControlPanel extends JPanel {
 		JButton gameStart = new JButton("START");
 		JButton gameReset = new JButton("RESET");
 		
-		JTextField userName = new JTextField("USER_NAME", 13);
+		userName = new JTextField("USER_1", 13);
+		
+		rankUser1 = new JLabel("1.");
+		rankUser2 = new JLabel("2.");
+		rankUser3 = new JLabel("3.");
+		rankUser4 = new JLabel("4.");
+		rankUser5 = new JLabel("5.");
 		
 		bgmON.setForeground(new Color(128, 192, 128));
 		bgmON.setBackground(Color.DARK_GRAY);
@@ -225,6 +307,32 @@ public class ControlPanel extends JPanel {
 		userName.setHorizontalAlignment(JTextField.CENTER);
 		add(userName);
 		
+		
+		rankUser1.setForeground(new Color(128, 192, 128));
+		Dimension sizerankUser1 = rankUser1.getPreferredSize();
+		rankUser1.setBounds(20, 310, sizerankUser1.width, sizerankUser1.height);// bgmON.setLocation(500,100);
+		add(rankUser1);
+		
+		rankUser2.setForeground(new Color(128, 192, 128));
+		Dimension sizerankUser2 = rankUser2.getPreferredSize();
+		rankUser2.setBounds(20, 330, sizerankUser2.width, sizerankUser2.height);// bgmON.setLocation(500,100);
+		add(rankUser2);
+		
+		rankUser3.setForeground(new Color(128, 192, 128));
+		Dimension sizerankUser3 = rankUser3.getPreferredSize();
+		rankUser3.setBounds(20, 350, sizerankUser3.width, sizerankUser3.height);// bgmON.setLocation(500,100);
+		add(rankUser3);
+		
+		rankUser4.setForeground(new Color(128, 192, 128));
+		Dimension sizerankUser4 = rankUser4.getPreferredSize();
+		rankUser4.setBounds(20, 370, sizerankUser4.width, sizerankUser4.height);// bgmON.setLocation(500,100);
+		add(rankUser4);
+		
+		rankUser5.setForeground(new Color(128, 192, 128));
+		Dimension sizerankUser5 = rankUser5.getPreferredSize();
+		rankUser5.setBounds(20, 390, sizerankUser5.width, sizerankUser5.height);// bgmON.setLocation(500,100);
+		add(rankUser5);
+		
 		try {
 			String path = System.getProperty("user.dir");
 			System.out.println(path);
@@ -262,13 +370,7 @@ public class ControlPanel extends JPanel {
 		int offset;
 
 		/*
-		 * g.setFont(LARGE_FONT); g.drawString("Stats", SMALL_INSET, offset =
-		 * STATS_INSET); g.setFont(SMALL_FONT); g.drawString("Level: " +
-		 * tetris.getLevel(), LARGE_INSET, offset += TEXT_STRIDE);
-		 * g.drawString("Score: " + tetris.getScore(), LARGE_INSET, offset +=
-		 * TEXT_STRIDE);
-		 * 
-		 * 
+
 		 * g.setFont(LARGE_FONT); g.drawString("Controls", SMALL_INSET, offset =
 		 * CONTROLS_INSET); g.setFont(SMALL_FONT); g.drawString("A - Move Left",
 		 * LARGE_INSET, offset += TEXT_STRIDE); g.drawString("D - Move Right",
@@ -284,6 +386,8 @@ public class ControlPanel extends JPanel {
 		g.setFont(LARGE_FONT);
 		g.drawString("[Game Setting]", SMALL_INSET, 170);
 
+		g.setFont(LARGE_FONT); 
+		g.drawString("[Game Rank]", SMALL_INSET, 300);
 	}
 
 	/**

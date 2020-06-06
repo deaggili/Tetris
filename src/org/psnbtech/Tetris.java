@@ -25,7 +25,7 @@ import javax.swing.JFrame;
  */
 public class Tetris extends JFrame {
 	
-	//private static Store store = new Store(new FileStore());
+	private static Store store = new Store(new FileStore());
 	/**
 	 * The Serial Version UID.
 	 */
@@ -286,6 +286,7 @@ public class Tetris extends JFrame {
 		 */
 		this.random = new Random();
 		this.isNewGame = true;
+		this.isRankWrite = false;
 		this.gameSpeed = 1.0f;
 		
 		/*
@@ -294,6 +295,8 @@ public class Tetris extends JFrame {
 		 */
 		this.logicTimer = new Clock(gameSpeed);
 		logicTimer.setPaused(true);
+		
+		getRankUser();
 		
 		while(true) {
 			//Get the time that the frame started.
@@ -405,7 +408,8 @@ public class Tetris extends JFrame {
 		this.gameSpeed = 1.0f;
 		this.nextType = TileType.values()[random.nextInt(TYPE_COUNT)];
 		this.isNewGame = false;
-		this.isGameOver = false;		
+		this.isGameOver = false;	
+		this.isRankWrite = false;
 		board.clear();
 		logicTimer.reset();
 		logicTimer.setCyclesPerSecond(gameSpeed);
@@ -416,6 +420,8 @@ public class Tetris extends JFrame {
 	 * Spawns a new piece and resets our piece's variables to their default
 	 * values.
 	 */
+	
+	private static boolean isRankWrite = false;
 	private void spawnPiece() {
 		/*
 		 * Poll the last piece and reset our position and rotation to
@@ -435,8 +441,50 @@ public class Tetris extends JFrame {
 			this.isGameOver = true;
 			logicTimer.setPaused(true);
 			
-			//ArrayList<String> list = store.readGameStore();
-			//store.writeGameStore(list);
+			if(isRankWrite == false) {
+				String userName = control.getUserName();
+				int userLevel = level;
+				int userScore = score;
+				
+				String userData = String.format("%s,%d,%d", userName, userLevel, userScore);
+				
+				ArrayList<String> list = store.readGameStore();
+				
+				int index = 0;
+				boolean isAdd = false;
+				for(String item : list) {
+					String[] data = item.split("\\,");
+					
+					String itemName = data[0];
+					
+					int itemLevel = Integer.valueOf(data[1]);
+					int itemScore = Integer.valueOf(data[2]);
+					
+					if(itemLevel < userLevel) {
+						isAdd = true;
+						break;
+					}
+					
+					if(itemLevel == userLevel) {
+						if(itemScore < userScore) {
+							isAdd = true;
+							break;
+						}
+					}
+					
+					index++;
+				}
+				
+				
+				if(isAdd) {
+					list.add(index ,userData);
+				}
+				
+				store.writeGameStore(list);
+				isRankWrite = true;
+				
+				getRankUser();
+			}
 		}		
 	}
 
@@ -576,6 +624,34 @@ public class Tetris extends JFrame {
 	
 	public void allGameReset() {
 		resetGame();
+		
+		//getRankUser();
+		
+	}
+	
+	private void getRankUser() {
+		ArrayList<String> rankList = store.readGameStore();
+
+		ArrayList<String> updateList = new ArrayList<String>();
+
+		int index = 1;
+		for (String item : rankList) {
+
+			String[] itemD = item.split("\\,");
+			String itemData = String.format("%d. %s L : %d, S : %d", index, itemD[0], Integer.valueOf(itemD[1]),
+					Integer.valueOf(itemD[2]));
+			
+			if(itemD[0].equals("0")) {
+				itemData = String.format("%d. ", index);	
+			}
+			
+			
+			index++;
+
+			updateList.add(itemData);
+		}
+		
+		control.setUpdateRankUser(updateList);
 	}
 	
 	/**
@@ -584,7 +660,8 @@ public class Tetris extends JFrame {
 	 * @param args Unused.
 	 */
 	public static void main(String[] args) {
-		Tetris tetris = new Tetris();
+		
+		Tetris tetris = new Tetris();	
 		tetris.startGame();
 		tetris.requestFocus();
 	}
